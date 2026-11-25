@@ -1,0 +1,212 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ember: #ff5a1f;
+  --color-gold: #ffb020;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background: #0e0e0e;
+  color: #f5f5f5;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition active:scale-95 disabled:pointer-events-none disabled:opacity-40;
+  }
+  .btn-primary {
+    @apply bg-ember text-white hover:bg-orange-500;
+  }
+  .btn-ghost {
+    @apply border border-white/10 bg-white/5 text-neutral-200 hover:bg-white/10;
+  }
+  .btn-danger {
+    @apply bg-red-600/90 text-white hover:bg-red-500;
+  }
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+  .input {
+    @apply w-full rounded-lg border border-white/10 bg-neutral-900 px-3 py-2 text-sm text-white placeholder:text-neutral-500 focus:border-ember focus:outline-none focus:ring-1 focus:ring-ember;
+  }
+  .card {
+    @apply rounded-xl border border-white/10 bg-neutral-900/70;
+  }
+  .label {
+    @apply mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-400;
+  }
+  .err {
+    @apply mt-1 text-xs text-red-400;
+  }
+}
+
+/* ---------- Printable thermal receipt (80mm) ---------- */
+#print-root {
+  display: none;
+}
+
+@media print {
+  @page {
+    size: 80mm auto;
+    margin: 3mm;
+  }
+  html,
+  body {
+    background: #fff !important;
+  }
+  body > #root {
+    display: none !important;
+  }
+  #print-root {
+    display: block !important;
+  }
+}
+/* ---------- Splash screen: sizzling fire intro ---------- */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 62%, #3a1203 0%, #140703 48%, #070504 100%);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.splash-out {
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+.splash-glow {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: 36rem;
+  height: 36rem;
+  max-width: 120vw;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255, 90, 31, 0.38) 0%, rgba(255, 90, 31, 0) 65%);
+  animation: glow-pulse 1.1s ease-in-out infinite alternate;
+}
+.splash-fire {
+  position: relative;
+  width: 9.5rem;
+  height: 11rem;
+  margin-bottom: 0.5rem;
+}
+.flame-svg {
+  position: absolute;
+  inset: 0 0 1.2rem 0;
+  width: 100%;
+  height: calc(100% - 1.2rem);
+  overflow: visible;
+  filter: drop-shadow(0 0 18px rgba(255, 110, 20, 0.85));
+}
+.flame {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+.f-outer { animation: flicker 0.9s ease-in-out infinite alternate; }
+.f-mid { animation: flicker 0.65s ease-in-out infinite alternate-reverse; }
+.f-core { animation: flicker 0.45s ease-in-out infinite alternate; }
+.grill {
+  position: absolute;
+  left: -8%;
+  right: -8%;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 1.2rem;
+  border-top: 3px solid #2a2a2a;
+}
+.grill i {
+  display: block;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(#444, #1c1c1c);
+  border-radius: 2px;
+}
+.ember {
+  position: absolute;
+  bottom: 2.4rem;
+  border-radius: 9999px;
+  background: #ffb020;
+  box-shadow: 0 0 8px 2px rgba(255, 140, 20, 0.9);
+  opacity: 0;
+  animation-name: ember-rise;
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+}
+.splash-title {
+  display: flex;
+  margin-top: 0.5rem;
+  font-size: clamp(2.6rem, 11vw, 4.5rem);
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  padding-left: 0.22em;
+  color: #ff5a1f;
+  text-shadow: 0 0 24px rgba(255, 90, 31, 0.55);
+}
+.splash-title span {
+  display: inline-block;
+  opacity: 0;
+  animation: letter-in 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.3) forwards;
+}
+.splash-tag {
+  margin-top: 0.25rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  color: #d9b79c;
+  opacity: 0;
+  animation: fade-up 0.7s ease forwards;
+  animation-delay: 1.3s;
+}
+.splash-skip {
+  position: absolute;
+  bottom: 1.2rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #6b5547;
+}
+
+@keyframes flicker {
+  0% { transform: scale(1, 1) skewX(0deg); }
+  35% { transform: scale(0.94, 1.06) skewX(-3deg); }
+  70% { transform: scale(1.04, 0.95) skewX(2.5deg); }
+  100% { transform: scale(0.97, 1.08) skewX(-1.5deg); }
+}
+@keyframes glow-pulse {
+  from { opacity: 0.65; transform: translate(-50%, -50%) scale(0.95); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
+}
+@keyframes ember-rise {
+  0% { opacity: 0; transform: translate(0, 0) scale(1); }
+  15% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--drift), -9rem) scale(0.2); }
+}
+@keyframes letter-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.8); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* People who turn animations off get a calm, static intro. */
+@media (prefers-reduced-motion: reduce) {
+  .flame, .ember, .splash-glow { animation: none; }
+  .ember { display: none; }
+}
