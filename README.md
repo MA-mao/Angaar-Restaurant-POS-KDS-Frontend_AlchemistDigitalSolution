@@ -4,8 +4,8 @@
 
 A fast, responsive Point-of-Sale terminal with a real-time Kitchen Display System (KDS), floor map, printable receipts and a manager dashboard. Built with **React + Vite + Tailwind CSS (JavaScript)**. All data access lives in a dedicated `src/services/` layer (async functions backed by `localStorage`) so the Backend team can plug in REST endpoints with minimal refactoring.
 
-- **Live demo:** `https://YOUR-APP.vercel.app](https://angaar-psi.vercel.app/`
-- **Repository:** `Restaurant-POS-KDS-Frontend_AlchemistDigitalSolution](https://github.com/MA-mao/Angaar-Restaurant-POS-KDS-Frontend_AlchemistDigitalSolution.git`
+- **Live demo:** `https://angaar-psi.vercel.app/`
+- **Repository:** `https://github.com/MA-mao/Angaar-Restaurant-POS-KDS-Frontend_AlchemistDigitalSolution.git`
 
 ## Demo login
 
